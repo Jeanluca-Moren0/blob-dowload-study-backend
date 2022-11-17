@@ -10,8 +10,8 @@ const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({ origin: '*' }));
 app.use(express_1.default.json());
-function sendFile(response, fileName) {
-    return response.contentType('application/pdf').sendFile(`./files/${fileName}.pdf`, { root: __dirname }, (err) => {
+async function sendFile(response, fileName) {
+    return await response.contentType('application/pdf').sendFile(`./files/${fileName}.pdf`, { root: __dirname }, (err) => {
         try {
             console.log('Arquivo enviado');
         }
@@ -26,7 +26,7 @@ function sendFile(response, fileName) {
 }
 app.get('/pdf/:id', (req, res) => {
     const { id } = req.params;
-    if (!id && id !== '1' && id !== '2') {
+    if (!id || id !== '1' && id !== '2') {
         console.error('There is no id, please insert one');
         res
             .status(404)
