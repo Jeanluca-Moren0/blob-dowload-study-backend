@@ -9,8 +9,8 @@ const app = express();
 app.use(cors({ origin: '*' }));
 app.use(express.json());
 
-function sendFile(response: express.Response, fileName: string) {
-  return response.contentType('application/pdf').sendFile(
+async function sendFile(response: express.Response, fileName: string) {
+  return await response.contentType('application/pdf').sendFile(
     `./files/${fileName}.pdf`,
     { root: __dirname },
     (err) => {
@@ -28,7 +28,7 @@ function sendFile(response: express.Response, fileName: string) {
 app.get('/pdf/:id', (req: express.Request, res: express.Response) => {
   const { id } = req.params;
 
-  if (!id && id !== '1' && id !== '2') {
+  if (!id || id !== '1' && id !== '2') {
     console.error('There is no id, please insert one');
     res
       .status(404)
